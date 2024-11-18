@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: crawler-service
+  namespace: crawler
+spec:
+  selector:
+    app: synergychat-crawler
+  type: ClusterIP
+  ports:
+  - name: crawler-service
+    protocol: TCP
+    port: 8080

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: synergychat-web
+  name: synergychat-web
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: synergychat-web
+  template:
+    metadata:
+      labels:
+        app: synergychat-web
+    spec:
+      containers:
+      - image: bootdotdev/synergychat-web:latest
+        name: synergychat-web
+        envFrom:
+        - configMapRef:
+            name: web-configmap
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: synergychat-web-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: synergychat-web
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 50
+
